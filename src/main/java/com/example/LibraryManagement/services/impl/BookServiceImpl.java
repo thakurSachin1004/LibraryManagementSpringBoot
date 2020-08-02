@@ -6,6 +6,10 @@ import com.example.LibraryManagement.repositories.AuthorRepository;
 import com.example.LibraryManagement.repositories.BookRepository;
 import com.example.LibraryManagement.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,8 +25,13 @@ public class BookServiceImpl implements BookService {
     AuthorRepository authorRepository;
 
     @Override
-    public List<Books> getAllBooks() {
-        return bookRepository.findAll();
+    public List<Books> getAllBooks(Integer pageNumber, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy));
+        Page<Books> pagedResult = bookRepository.findAll(pageable);
+        if(pagedResult.hasContent())
+            return pagedResult.getContent();
+        else
+            return new ArrayList<Books>();
     }
 
     @Override

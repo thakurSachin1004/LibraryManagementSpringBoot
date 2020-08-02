@@ -1,5 +1,7 @@
 package com.example.LibraryManagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,8 @@ public class Authors {
     @Column(name = "Author_Country")
     private String country;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "book_author",
             joinColumns = @JoinColumn(name = "author_id", referencedColumnName = "Author_id"),

@@ -1,12 +1,16 @@
 package com.example.LibraryManagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.RepresentationModel;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "books")
-public class Books {
+public class Books extends RepresentationModel<Books> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Book_id")
@@ -24,6 +28,7 @@ public class Books {
     @Column(name = "Pages_count")
     private Integer pagesCount;
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "book_author",
