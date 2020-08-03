@@ -2,6 +2,7 @@ package com.example.LibraryManagement.services.impl;
 
 import com.example.LibraryManagement.entities.Authors;
 import com.example.LibraryManagement.entities.Books;
+import com.example.LibraryManagement.exceptions.BookNotFoundException;
 import com.example.LibraryManagement.repositories.AuthorRepository;
 import com.example.LibraryManagement.repositories.BookRepository;
 import com.example.LibraryManagement.services.BookService;
@@ -25,18 +26,22 @@ public class BookServiceImpl implements BookService {
     AuthorRepository authorRepository;
 
     @Override
-    public List<Books> getAllBooks(Integer pageNumber, Integer pageSize, String sortBy) {
+    public Page<Books> getAllBooks(Integer pageNumber, Integer pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber,pageSize, Sort.by(sortBy));
         Page<Books> pagedResult = bookRepository.findAll(pageable);
-        if(pagedResult.hasContent())
-            return pagedResult.getContent();
-        else
-            return new ArrayList<Books>();
+        if(pagedResult == null) {
+            throw new BookNotFoundException("Currently no Books are available");
+        }
+        return pagedResult;
     }
 
     @Override
     public Books getBookById(int bookId) {
-        return bookRepository.findById(bookId);
+        Books book = bookRepository.findById(bookId);
+        if(book == null) {
+            throw new BookNotFoundException("No Book found for id = " + bookId);
+        }
+        return book;
     }
 
     @Override

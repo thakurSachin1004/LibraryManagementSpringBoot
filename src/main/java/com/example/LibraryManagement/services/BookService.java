@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface BookService {
-    List<Books> getAllBooks(Integer pageNumber, Integer pageSize, String sortBy);
+    Page<Books> getAllBooks(Integer pageNumber, Integer pageSize, String sortBy);
     Books getBookById(int bookId);
     void addBook(Books book);
     List<Books> getBooksByAuthorName(String authorName);

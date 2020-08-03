@@ -1,8 +1,6 @@
 package com.example.LibraryManagement.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "books")
-public class Books extends RepresentationModel<Books> {
+public class Books {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Book_id")
@@ -47,6 +45,14 @@ public class Books extends RepresentationModel<Books> {
         this.publishYear = publishYear;
         this.pagesCount = pagesCount;
         this.authors = new ArrayList<>();
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 
     public String getBookName() {
